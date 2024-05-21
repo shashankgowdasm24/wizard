@@ -1,18 +1,34 @@
-const wizard = document.getElementById("wizard");
-const container = document.querySelector(".container");
+document.addEventListener('DOMContentLoaded', () => {
+  const wizard = document.getElementById('wizard');
+  const container = document.querySelector('.container');
 
-container.addEventListener("click", (event) => {
-  const mousePosition = {
-    x: event.clientX - (wizard.offsetLeft + wizard.offsetWidth) / 2,
-    y: event.clientY - (wizard.offsetTop + wizard.offsetHeight) / 2,
-  };
+  container.addEventListener('click', (event) => {
+      const rect = container.getBoundingClientRect();
+      const containerX = rect.left;
+      const containerY = rect.top;
 
-  const angle = (Math.atan2(mousePosition.y, mousePosition.x) * 180) / Math.PI;
+      const clickX = event.clientX - containerX;
+      const clickY = event.clientY - containerY;
 
-  const initialOrientation = 180;
+      const wizardX = wizard.offsetLeft + wizard.offsetWidth / 2;
+      const wizardY = wizard.offsetTop + wizard.offsetHeight / 2;
 
-  wizard.style.transform = `rotate(${angle + initialOrientation}deg)`;
+      const deltaX = clickX - wizardX;
+      const deltaY = clickY - wizardY;
 
-  wizard.style.left = `${event.clientX - wizard.offsetWidth / 2}px`;
-  wizard.style.top = `${event.clientY - wizard.offsetHeight / 2}px`;
+      let angle = Math.atan2(deltaY, deltaX);
+      
+      let angleDeg = angle * (180 / Math.PI);
+
+      angleDeg = (angleDeg + 360) % 360;
+      const isClickLeft = deltaX < 0;
+
+      if (isClickLeft) {
+          angleDeg += 180;
+      }
+
+      wizard.style.transform = `rotate(${angleDeg}deg) scaleX(${isClickLeft ? -1 : 1})`;
+      wizard.style.left = `${clickX - wizard.offsetWidth / 2}px`;
+      wizard.style.top = `${clickY - wizard.offsetHeight / 2}px`;
+  });
 });
