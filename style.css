@@ -17,5 +17,5 @@ body, html {
     position: absolute;
     width: 100px;
     height: 100px;
-    transition: transform 0.5s ease, left 5s ease, top 5s ease;
+    transition: transform 0.5s ease, left 8s ease, top 8s ease;
 }
